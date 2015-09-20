@@ -6,3 +6,8 @@ body {
 a {
   color: #00B7FF;
 }
+
+#storyWell {
+  max-height:300px;
+  overflow-y:auto;
+}

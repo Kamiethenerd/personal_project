@@ -1,1 +1,10 @@
 //Main game stuff will be here
+extends layout
+
+block content
+    .gameInterface#fluidContainer
+        #locationDisplay.text-info
+        #xpDisplay.text-success
+        #storyWell.well.well-lg
+        p INPUT
+            input#userInput.well-sm(type='text')

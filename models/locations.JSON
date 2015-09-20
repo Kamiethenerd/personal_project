@@ -1,0 +1,37 @@
+{
+  "name": "Zombie Carnival of Doom",
+  "meta": {
+    "author": "Kamie Kehrwald",
+    "welcome": ""
+  },
+  "locations": [{
+    "loc1": {
+      "alias": "Front Gate",
+      "description": "The entrance is made up to look like the wide gaping mouth of a sinister looking clown",
+      "contextualHelp": "Look around and see if you can find something you can use",
+      "actions": null,
+      "exits": {
+        "entrance": "loc2"
+      },
+      "objects": null
+    }
+  }, {
+    "loc2": {
+      "alias": "Entrance area",
+      "description": " ",
+      "contextualHelp": "Water is helpful when you are dehydrated from all the walking around",
+      "actions": null,
+      "exits": {
+        "north": "room6",
+        "east": "room3",
+        "south": "room1",
+        "west": "-1"
+      },
+      "objects": {
+        "bottle": {
+          "actions": null
+        }
+      },
+      "enemies": null
+    }
+  }
