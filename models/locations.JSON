@@ -7,8 +7,8 @@
   "locations": [{
     "loc1": {
       "alias": "Front Gate",
-      "description": "The entrance is made up to look like the wide gaping mouth of a sinister looking clown",
-      "contextualHelp": "Look around and see if you can find something you can use",
+      "description": "The entrance is made up to look like the wide gaping mouth of a sinister looking clown, but you'll be darned if you miss the one bit of excitement to come to your town in months",
+      "hint": "Go Entrance",
       "actions": null,
       "exits": {
         "entrance": "loc2"
@@ -17,15 +17,12 @@
     }
   }, {
     "loc2": {
-      "alias": "Entrance area",
-      "description": " ",
-      "contextualHelp": "Water is helpful when you are dehydrated from all the walking around",
+      "alias": "Entrance",
+      "description": "Through the entrance you come to an open area to your left is a fortune teller and to your right is the freak show. Too bad for you, right now you can only go back out the entrance ",
+      "hint": "Go Front Gate",
       "actions": null,
       "exits": {
-        "north": "room6",
-        "east": "room3",
-        "south": "room1",
-        "west": "-1"
+        "Front Gate": "loc1"
       },
       "objects": {
         "bottle": {
@@ -34,4 +31,5 @@
       },
       "enemies": null
     }
-  }
+  }]
+}
