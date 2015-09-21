@@ -7,24 +7,38 @@ $(document).ready(function() {
     var xp = 0;
     var st = 0;
     var def = 0;
-    var backpack = [];
-    var keywords = ["go", "take", "use", "attack"];
+    var backpack = {};
+    var keywords = ["go", "take", "use", "attack", "hint"];
     var userInput = [];
+    var actionWord = [];
+    var descWord =[];
 
     //jquery variables
-    var $p = ('<p>');
    //separating out the user input
-    var separate = userInput.toString().split(' ');
-    var actionWord = separate[0];
-    var descWord = separate[1];
+    function separateText(){
+        var separate = userInput.toString().split(' ');
+        actionWord = separate[0];
+        descWord = separate[1];
+    }
+
+
+
+    function playerText(next){
+        var $p = $('<p>');
+        $p.append("Player: " + userInput);
+        $('#storyWell').append($p);
+        return next
+    }
 
 
     // handling inputs
     $("#userInput").keypress(function (e) {
         if (e.which == 13) {
             userInput = $(this).val();
-            console.log(separate);
-            alert(typeof separate);
+            playerText();
+            separateText();
+            console.log(userInput);
+            //alert(typeof separate);
             console.log("User Input: " + userInput + ", Action Word: " + actionWord + ", Description Word: " + descWord);
             verbSwitch();
         }
@@ -34,25 +48,35 @@ $(document).ready(function() {
 
 
     // verb handling switch
-    function verbSwitch(actionWord){
-        //actionWord = actionWord.toLowerCase();
+    function verbSwitch(){
+        actionWord = actionWord.toLowerCase();
+        var $p = $('<p>');
 
         switch (actionWord) {
-            case "go": // run function that pulls the next location object
+            case "go":
+                $p.append("You want to go to " + descWord);
+                $("#storyWell").append($p);
+                console.log("going...");
+
                 break;
             case "take": // run function that checks if the requested item is available, and if so
                 // moves the item to the backpack array
                 // run function that appends the item text to the story well
+                console.log('Taking ' + descWord);
                 break;
             case 'use'://run function that checks if the requested item is in the back pack, and if so
                 // checks for any actions from this item in this location, is so runs action and
                 // removes it from the backpack.
+                console.log("using " + descWord);
                 break;
             case 'hint':
             //run function that grabs hint for this room
+                console.log("getting hint...");
             default:
-                $("#storyWell").append("<p>I don't know what you want</p>");
-                console.log('defaulted')
+                $p.append("I don't know what you want");
+                $("#storyWell").append($p);
+                console.log('defaulted');
+
         }
     }
 
@@ -66,12 +90,12 @@ $(document).ready(function() {
                 console.log('Ajax for getting area complete');
             },
             success: function (data) {
-                $p.append
+
             }
         });
     }
 
-    // displaying JSON
+    
 
     //Leveling Mechanic
     //level switch for upgrades
