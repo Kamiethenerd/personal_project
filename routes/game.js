@@ -9,10 +9,10 @@ router.get('/game', function(req, res, next) {
 });
 
 /* GET new location. */
-//router.get('/game', function(req, res, next){
-//  console.log('loading area');
-//  res.send(locations);
-//});
+router.get('/game', function(req, res, next){
+  console.log('loading area');
+  res.send(locations);
+});
 
 
 module.exports = router;
