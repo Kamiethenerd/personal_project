@@ -1,16 +1,13 @@
+gameLogic = require('/gameLogic)';
 module.exports = {
     //Leveling Mechanic
     //level switch for upgrades
     levelUp:function(x){
+        var upLevel = "Congrats! you leveled up!";
+        var upStrength = "You are now stronger!";
+        var upDef = "Defenses up!";
+
         switch (x) {
-
-            var upLevel = "Congrats! you leveled up!";
-                var upStrength = "You are now stronger!";
-                var upDef = "Defenses up!";
-
-
-
-
             case 500:
                 appendStoryWell(upLevel);
                 currentLevel = 2;

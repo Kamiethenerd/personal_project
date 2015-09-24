@@ -9,7 +9,7 @@ $(document).ready(function() {
     var st = 0;
     var def = 0;
     var currentLevel = 1;
-    var backpack = {};
+    var backpack = ["dollar", "piece of lint"];
     var keywords = ["go", "take", "use", "attack", "hint"];
 
     var areaId = 0;
@@ -90,11 +90,11 @@ $(document).ready(function() {
 
         switch (actionWord) {
             case "go":
-                vsExits();
+                vsExits(exits);
                 $p.append("You want to go to " + descWord);
                 $("#storyWell").append($p);
-                getArea(areaId);
-                addAreaText();
+                //getArea(areaId);
+                //addAreaText();
 
                 break;
             case "take": // run function that checks if the requested item is available, and if so
@@ -124,17 +124,16 @@ $(document).ready(function() {
         currentArea = [];
         areaText = [];
         hint = [];
-        exits = [];
         objectList = [];
 
-        console.log(obj);
+        //console.log(obj);
         currentLocationStuff.push(obj);
         currentArea.push(obj.locName);
         areaText.push(obj.description);
         hint.push(obj.hint);
-        exits.push(obj.exits);
+        exits = obj.exits;
         objectList.push(obj.objects);
-        console.log(currentArea + ", " + hint + ", " + objectList + ", ");
+        //console.log(currentArea + ", " + hint + ", " + objectList + ", ");
         //addAreaText(areaText);
 
     }
@@ -149,7 +148,6 @@ $(document).ready(function() {
                 console.log('Ajax for getting area complete');
             },
             success: function (data) {
-                console.log("stuff!");
                 newArea(data.location);
             }
         });
@@ -163,20 +161,26 @@ $(document).ready(function() {
     }
 
 
-    function vsExits() {
+    function vsExits(obj) {
         console.log("comparing exits . . .");
 
-        for (var i = 0; i <= exits.length; i++) {
+        for (var key in obj) {
+            //alert(' name=' + key + ' value=' + obj[key]);
 
-            var s = exits[i].toString().split(':');
-            console.log(descWord + ", " + exits[i]);
+            if (descWord == key) {
 
-            if (descWord == s[0]) {
-
-                console.log(exits[i]);
-                areaId = s[1];
+                console.log(descWord + " matched!");
+                areaId = obj[key];
                 console.log(areaId);
                 getArea(areaId);
+
+                setTimeout(function(){
+                    console.log("area text: " + areaText);
+                    addAreaText(areaText);
+                }, 1000);
+
+                break;
+
             } else {
                 var nope = "Exit requested does not exist.";
 

@@ -11,44 +11,48 @@
       "hint": "Go Entrance",
       "actions": null,
       "exits": {
-        "entrance": 1,
-        "forward": 1
+      "entrance": 1,
+      "forward": 1
       },
       "objects": null,
       "enemies": false
     },
     {
       "locName": "Entrance",
-      "description": "Through the entrance you come to an open area to your left is a fortune teller and to your right is the freak show.n/Too bad for you, right now you can only go back out the entrance ",
+      "description": "Through the entrance you come to an open area to your left is a fortune teller and to your right is the freak show, in front of you is a broken down gateway with a sign above it that says 'Zombie Zoo' ",
       "hint": "",
       "actions": null,
       "exits": {
-        "Front Gate": 0,
-        "Back": 0,
-        "Left": 2,
-        "Right": 3
+        "front gate": 0,
+        "back": 0,
+        "left": 2,
+        "right": 3,
+        "forward": 4
       },
       "objects": null,
       "enemies": false
     },
     {
       "locName": "Fortune Teller's Tent",
-      "description": "The Fortune Tellers looks up from her cards.n/'Hello! I've been waiting for you.",
-      "hint": "Go Front Gate",
-      "actions": null,
-      "exits": {
-        "back": 1
+      "description": "The Fortune Tellers looks up from her cards./n'Hello! I've been waiting for you.' ",
+      "hint": "go back",
+      "actions": {
+        "dollar":
+
       },
+      "exits": {
+      "back": 1
+    },
       "objects": null,
       "enemies": false
     },
     {
       "locName": "Freak Show Entrance",
-      "description": "Through the entrance you come to an open area to your left is a fortune teller and to your right is the freak show. Too bad for you, right now you can only go back out the entrance ",
-      "hint": "Go Front Gate",
+      "description": " Welcome to the Freak Show ",
+      "hint": "Go back",
       "actions": null,
       "exits": {
-        "Front Gate": 1,
+        "front gate": 1,
         "back": 1,
         "inside": 4
       },

@@ -4,14 +4,14 @@
     "author": "Kamie Kehrwald",
     "welcome": ""
   },
-  "level 1": [
+  "level1": [
     {
       "monName": "Not Particularly Scary Zombie",
       "monSt": 1 ,
       "monDF": 1
     }
   ],
-  "level 2": [
+  "level2": [
     {
       "monName": "A Kinda Scary Zombie",
       "monSt": 2 ,
