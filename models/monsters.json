@@ -1,0 +1,24 @@
+{
+  "name": "Zombie Carnival of Doom",
+  "meta": {
+    "author": "Kamie Kehrwald",
+    "welcome": ""
+  },
+  "level 1": [
+    {
+      "monName": "Not Particularly Scary Zombie",
+      "monSt": 1 ,
+      "monDF": 1
+    }
+  ],
+  "level 2": [
+    {
+      "monName": "A Kinda Scary Zombie",
+      "monSt": 2 ,
+      "monDF": 2
+    }
+  ],
+  "level 3": [],
+  "level 4": [],
+  "level 5": []
+}

@@ -14,9 +14,10 @@ a {
 
 #storyWell p{
   font-family: 'Special Elite', cursive;
+  text-wrap: normal;
   white-space:nowrap;
   overflow: hidden;
-  width: 30em;
+  width: 100em;
   animation: type 5s steps(50, end) 1;
 }
 @keyframes type{

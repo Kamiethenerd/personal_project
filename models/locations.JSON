@@ -4,32 +4,56 @@
     "author": "Kamie Kehrwald",
     "welcome": ""
   },
-  "locations": [{
-    "loc1": {
-      "alias": "Front Gate",
-      "description": "The entrance is made up to look like the wide gaping mouth of a sinister looking clown, but you'll be darned if you miss the one bit of excitement to come to your town in months",
+  "locations": [
+    {
+      "locName": "Front Gate",
+      "description": "The entrance is made up to look like the wide gaping mouth of a sinister looking clown, but you'll be darned if you miss the one bit of n/excitement to come to your town in months",
       "hint": "Go Entrance",
       "actions": null,
       "exits": {
-        "entrance": "loc2"
+        "entrance": 1,
+        "forward": 1
       },
-      "objects": null
-    }
-  }, {
-    "loc2": {
-      "alias": "Entrance",
+      "objects": null,
+      "enemies": false
+    },
+    {
+      "locName": "Entrance",
+      "description": "Through the entrance you come to an open area to your left is a fortune teller and to your right is the freak show.n/Too bad for you, right now you can only go back out the entrance ",
+      "hint": "",
+      "actions": null,
+      "exits": {
+        "Front Gate": 0,
+        "Back": 0,
+        "Left": 2,
+        "Right": 3
+      },
+      "objects": null,
+      "enemies": false
+    },
+    {
+      "locName": "Fortune Teller's Tent",
+      "description": "The Fortune Tellers looks up from her cards.n/'Hello! I've been waiting for you.",
+      "hint": "Go Front Gate",
+      "actions": null,
+      "exits": {
+        "back": 1
+      },
+      "objects": null,
+      "enemies": false
+    },
+    {
+      "locName": "Freak Show Entrance",
       "description": "Through the entrance you come to an open area to your left is a fortune teller and to your right is the freak show. Too bad for you, right now you can only go back out the entrance ",
       "hint": "Go Front Gate",
       "actions": null,
       "exits": {
-        "Front Gate": "loc1"
+        "Front Gate": 1,
+        "back": 1,
+        "inside": 4
       },
-      "objects": {
-        "bottle": {
-          "actions": null
-        }
-      },
-      "enemies": null
+      "objects": null,
+      "enemies": false
     }
-  }]
+  ]
 }

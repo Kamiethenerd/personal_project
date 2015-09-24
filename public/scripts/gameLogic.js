@@ -4,26 +4,63 @@
 // this is where the main game logic will go
 $(document).ready(function() {
     // Game variables
+    //user stuff
     var xp = 0;
     var st = 0;
     var def = 0;
+    var currentLevel = 1;
     var backpack = {};
     var keywords = ["go", "take", "use", "attack", "hint"];
+
+    var areaId = 0;
     var userInput = [];
     var actionWord = [];
-    var descWord =[];
+    var descWord = [];
 
-    //jquery variables
-   //separating out the user input
-    function separateText(){
+    var currentLocationStuff = [];
+    var currentArea = [];
+    var areaText = [];
+    var hint = [];
+    var exits = [];
+    var objectList = [];
+
+
+    // when loading page
+    function opening() {
+        var load = "loading . . . ";
+        var start = "please enter your name";
+
+        appendStoryWell(load);
+        console.log(areaId);
+        getArea(areaId);
+        //appendStoryWell(start);
+
+        setTimeout(function(){
+            console.log("area text: " + areaText);
+            addAreaText(areaText);
+        }, 1000);
+    }
+
+
+    opening();
+
+    //separating out the user input
+    function separateText() {
         var separate = userInput.toString().split(' ');
         actionWord = separate[0];
         descWord = separate[1];
     }
 
+    function appendStoryWell(t) {
+        var $p = $('<p>');
+
+        $p.text(t);
+        $('#storyWell').append($p);
+    }
 
 
-    function playerText(next){
+    // add player text to story log
+    function playerText(next) {
         var $p = $('<p>');
         $p.append("Player: " + userInput);
         $('#storyWell').append($p);
@@ -39,24 +76,25 @@ $(document).ready(function() {
             separateText();
             console.log(userInput);
             //alert(typeof separate);
-            console.log("User Input: " + userInput + ", Action Word: " + actionWord + ", Description Word: " + descWord);
+            //console.log("User Input: " + userInput + ", Action Word: " + actionWord + ", Description Word: " + descWord);
             verbSwitch();
         }
 
     });
 
 
-
     // verb handling switch
-    function verbSwitch(){
+    function verbSwitch() {
         actionWord = actionWord.toLowerCase();
         var $p = $('<p>');
 
         switch (actionWord) {
             case "go":
+                vsExits();
                 $p.append("You want to go to " + descWord);
                 $("#storyWell").append($p);
-                console.log("going...");
+                getArea(areaId);
+                addAreaText();
 
                 break;
             case "take": // run function that checks if the requested item is available, and if so
@@ -70,34 +108,90 @@ $(document).ready(function() {
                 console.log("using " + descWord);
                 break;
             case 'hint':
-            //run function that grabs hint for this room
-                console.log("getting hint...");
+                appendStoryWell(hint);
+                console.log("getting hint..." + hint);
+                break;
+
             default:
-                $p.append("I don't know what you want");
-                $("#storyWell").append($p);
-                console.log('defaulted');
+                var idk = "I don't know what you want";
+                appendStoryWell(idk);
 
         }
     }
 
+    function newArea(obj) {
+        currentLocationStuff = [];
+        currentArea = [];
+        areaText = [];
+        hint = [];
+        exits = [];
+        objectList = [];
+
+        console.log(obj);
+        currentLocationStuff.push(obj);
+        currentArea.push(obj.locName);
+        areaText.push(obj.description);
+        hint.push(obj.hint);
+        exits.push(obj.exits);
+        objectList.push(obj.objects);
+        console.log(currentArea + ", " + hint + ", " + objectList + ", ");
+        //addAreaText(areaText);
+
+    }
+
     // pulling JSON
-    function getArea(descWord) {
+    function getArea(id) {
         $.ajax({
             type: 'GET',
             dataType: 'json',
-            url: '/locations',
+            url: '/locations/' + id,
             complete: function () {
                 console.log('Ajax for getting area complete');
             },
             success: function (data) {
-
+                console.log("stuff!");
+                newArea(data.location);
             }
         });
+
     }
 
-    
+    function addAreaText() {
+        appendStoryWell(areaText);
+        console.log('loading text for' + currentArea);
+        $('#locationDisplay').text(currentArea);
+    }
 
-    //Leveling Mechanic
-    //level switch for upgrades
+
+    function vsExits() {
+        console.log("comparing exits . . .");
+
+        for (var i = 0; i <= exits.length; i++) {
+
+            var s = exits[i].toString().split(':');
+            console.log(descWord + ", " + exits[i]);
+
+            if (descWord == s[0]) {
+
+                console.log(exits[i]);
+                areaId = s[1];
+                console.log(areaId);
+                getArea(areaId);
+            } else {
+                var nope = "Exit requested does not exist.";
+
+                console.log('not an exit');
+                appendStoryWell(nope);
+
+            }
+        }
+    }
+
+    //opening();
 });
+
+
+
+
+
 

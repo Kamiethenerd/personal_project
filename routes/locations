@@ -1,0 +1,11 @@
+var locations = require('../models/locations');
+var express = require('express');
+var router = express.Router();
+var path = require('path');
+
+router.get('/:id', function(req, res, next){
+    console.log('loading area');
+    //console.log(locations.locations[req.params.id]);
+    res.json({location: locations.locations[req.params.id] });
+});
+module.exports = router;
