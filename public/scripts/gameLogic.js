@@ -78,6 +78,8 @@ $(document).ready(function() {
             //alert(typeof separate);
             //console.log("User Input: " + userInput + ", Action Word: " + actionWord + ", Description Word: " + descWord);
             verbSwitch();
+            $('#storyWell').scrollTop($('#storyWell')[0].scrollHeight);
+            $('input[type="text"], textarea').val('');
         }
 
     });
@@ -86,7 +88,7 @@ $(document).ready(function() {
     // verb handling switch
     function verbSwitch() {
         actionWord = actionWord.toLowerCase();
-        var $p = $('<p>');
+        //var $p = $('<p>');
 
         switch (actionWord) {
             case "go":

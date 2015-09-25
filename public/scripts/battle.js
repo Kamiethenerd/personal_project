@@ -15,9 +15,18 @@ module.export = {
         setTimeout(function(){
             $p = ('<p>');
             console.log("monster: " + currentMonster);
-            $p.text("Oh no! It's " + currentMonster +"!");
-            $('#storyWell').append($p);
+            var newMon = "Oh no! It's " + currentMonster +"!";
+            appendStoryWell(newMon)
         }, 2000);
+
+        function appendStoryWell(t) {
+            var $p = $('<p>');
+            $p.text(t);
+            $('#storyWell').append($p);
+        }
+
+
+
 
 
 //play makes chance.js roll to do damage to monster
