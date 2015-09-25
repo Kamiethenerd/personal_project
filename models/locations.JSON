@@ -7,7 +7,7 @@
   "locations": [
     {
       "locName": "Front Gate",
-      "description": "The entrance is made up to look like the wide gaping mouth of a sinister looking clown, but you'll be darned if you miss the one bit of n/excitement to come to your town in months",
+      "description": "The entrance is made up to look like the wide gaping mouth of a sinister looking clown,\nbut you'll be darned if you miss the one bit of excitement to come to your town in months",
       "hint": "Go Entrance",
       "actions": null,
       "exits": {
@@ -20,7 +20,7 @@
     {
       "locName": "Entrance",
       "description": "Through the entrance you come to an open area to your left is a fortune teller and to your right is the freak show, in front of you is a broken down gateway with a sign above it that says 'Zombie Zoo' ",
-      "hint": "",
+      "hint": "go left, right, forward, back or front gate",
       "actions": null,
       "exits": {
         "front gate": 0,
@@ -37,8 +37,7 @@
       "description": "The Fortune Tellers looks up from her cards./n'Hello! I've been waiting for you.' ",
       "hint": "go back",
       "actions": {
-        "dollar":
-
+        "dollar": "She takes your money and a mist begins to swirl from nowhere.'Someone is thinking about you' She says,'someone far away from here' "
       },
       "exits": {
       "back": 1

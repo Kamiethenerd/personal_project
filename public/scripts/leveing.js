@@ -1,4 +1,6 @@
-gameLogic = require('/gameLogic)';
+ var gameLogic = require('/gameLogic)';
+
+
 module.exports = {
     //Leveling Mechanic
     //level switch for upgrades

@@ -91,14 +91,15 @@ $(document).ready(function() {
         switch (actionWord) {
             case "go":
                 vsExits(exits);
-                $p.append("You want to go to " + descWord);
-                $("#storyWell").append($p);
+                //$p.append("You want to go to " + descWord);
+                //$("#storyWell").append($p);
                 //getArea(areaId);
                 //addAreaText();
 
                 break;
             case "take": // run function that checks if the requested item is available, and if so
                 // moves the item to the backpack array
+                checkFor();
                 // run function that appends the item text to the story well
                 console.log('Taking ' + descWord);
                 break;
@@ -111,7 +112,11 @@ $(document).ready(function() {
                 appendStoryWell(hint);
                 console.log("getting hint..." + hint);
                 break;
-
+            case 'backpack':
+                var pack = " In your backpack you have " + backpack;
+                appendStoryWell(pack);
+                console.log("what's in that back pack?");
+                break;
             default:
                 var idk = "I don't know what you want";
                 appendStoryWell(idk);
@@ -160,9 +165,10 @@ $(document).ready(function() {
         $('#locationDisplay').text(currentArea);
     }
 
-
+    //check the descword againts the exits
     function vsExits(obj) {
         console.log("comparing exits . . .");
+        var found = false;
 
         for (var key in obj) {
             //alert(' name=' + key + ' value=' + obj[key]);
@@ -173,25 +179,29 @@ $(document).ready(function() {
                 areaId = obj[key];
                 console.log(areaId);
                 getArea(areaId);
+                found = true;
 
                 setTimeout(function(){
                     console.log("area text: " + areaText);
                     addAreaText(areaText);
-                }, 1000);
-
-                break;
+                }, 2000);
 
             } else {
-                var nope = "Exit requested does not exist.";
-
                 console.log('not an exit');
-                appendStoryWell(nope);
-
             }
+        }
+        //console.log(found);
+        if (found == false) {
+            var nope = "Exit requested does not exist.";
+            appendStoryWell(nope);
         }
     }
 
-    //opening();
+    function checkFor(thing, place){
+
+
+    }
+
 });
 
 
