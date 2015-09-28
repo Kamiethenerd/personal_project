@@ -1,15 +1,12 @@
-/**
- * Created by kamie kehrwald on 9/18/15.
- */
-// this is where the main game logic will go
 $(document).ready(function() {
+    //var battle = require("./battle.js");
     // Game variables
     //user stuff
     var xp = 0;
     var st = 0;
     var def = 0;
     var currentLevel = 1;
-    var backpack = ["dollar", "piece of lint"];
+    var backpack = [" dollar", " piece of lint"];
     var keywords = ["go", "take", "use", "attack", "hint"];
 
     var areaId = 0;
@@ -35,7 +32,7 @@ $(document).ready(function() {
         getArea(areaId);
         //appendStoryWell(start);
 
-        setTimeout(function(){
+        setTimeout(function () {
             console.log("area text: " + areaText);
             addAreaText(areaText);
         }, 1000);
@@ -46,16 +43,25 @@ $(document).ready(function() {
 
     //separating out the user input
     function separateText() {
-        var separate = userInput.toString().split(' ');
-        actionWord = separate[0];
-        descWord = separate[1];
+       if (userInput.indexOf(" ") > 0) {
+           // var separate = userInput.toString().split(' ');
+           actionWord = userInput.substr(0, userInput.indexOf(' '));
+           //separate[0];
+           descWord = userInput.substr(userInput.indexOf(' ') + 1);
+           //separate[1];
+       } else {
+           actionWord = userInput;
+           descWord = " "
+       }
     }
 
     function appendStoryWell(t) {
         var $p = $('<p>');
 
         $p.text(t);
+        $('#storyWell').scrollTop($('#storyWell')[0].scrollHeight);
         $('#storyWell').append($p);
+
     }
 
 
@@ -75,10 +81,8 @@ $(document).ready(function() {
             playerText();
             separateText();
             console.log(userInput);
-            //alert(typeof separate);
-            //console.log("User Input: " + userInput + ", Action Word: " + actionWord + ", Description Word: " + descWord);
             verbSwitch();
-            $('#storyWell').scrollTop($('#storyWell')[0].scrollHeight);
+            console.log('first word: ' + actionWord + ", everything else: " + descWord);
             $('input[type="text"], textarea').val('');
         }
 
@@ -93,21 +97,13 @@ $(document).ready(function() {
         switch (actionWord) {
             case "go":
                 vsExits(exits);
-                //$p.append("You want to go to " + descWord);
-                //$("#storyWell").append($p);
-                //getArea(areaId);
-                //addAreaText();
-
                 break;
-            case "take": // run function that checks if the requested item is available, and if so
-                // moves the item to the backpack array
-                checkFor();
-                // run function that appends the item text to the story well
+            case "take":case "grab":
+                takeCheck(descWord);
                 console.log('Taking ' + descWord);
                 break;
-            case 'use'://run function that checks if the requested item is in the back pack, and if so
-                // checks for any actions from this item in this location, is so runs action and
-                // removes it from the backpack.
+            case 'use':case "give":
+                useCheck(descWord);
                 console.log("using " + descWord);
                 break;
             case 'hint':
@@ -118,6 +114,10 @@ $(document).ready(function() {
                 var pack = " In your backpack you have " + backpack;
                 appendStoryWell(pack);
                 console.log("what's in that back pack?");
+                break;
+            case 'fight':
+                battle.battle(currentLevel,st,def);
+                console.log('fight!')
                 break;
             default:
                 var idk = "I don't know what you want";
@@ -183,7 +183,7 @@ $(document).ready(function() {
                 getArea(areaId);
                 found = true;
 
-                setTimeout(function(){
+                setTimeout(function () {
                     console.log("area text: " + areaText);
                     addAreaText(areaText);
                 }, 2000);
@@ -199,12 +199,124 @@ $(document).ready(function() {
         }
     }
 
-    function checkFor(thing, place){
+    function takeCheck(item) {
+        found = false;
 
+        for (var i = 0; i <= objectList.length; i++) {
+            console.log(objectList[i]);
 
+            if (item == objectList[i]) {
+                var msg = "You added " + objectList[i] + " to your backpack!";
+                backpack.push(objectList[i]);
+                appendStoryWell(msg);
+                found = true;
+            } else {
+                console.log("not an item match");
+            }
+        }
+        if (found == false) {
+            var msg = item + " is not an available item to pick-up.";
+            appendStoryWell(msg);
+        }
     }
 
+    function useCheck(item) {
+        found = false;
+        console.log('searching your backpack . . .');
+
+        for (var i = 0; i <= backpack.length; i++) {
+            console.log(backpack[i]);
+
+            if (item == backpack[i]) {
+
+                var msg = "You used" + backpack[i] + "!";
+                backpack.splice(i, 1);
+                console.log(backpack[i]);
+                appendStoryWell(msg);
+                found = true;
+            } else {
+                console.log("not an item match");
+            }
+        }
+        if (found == false) {
+            var msg = item + " doesn't seem to be in your backpack.";
+            appendStoryWell(msg);
+        }
+    }
 });
+
+
+
+    //typing animation examples
+
+    //function typeAnimation(v){
+    //    $(function() {
+    //        var srcText = $("<p>").append(v);
+    //        var i = 0;
+    //        var result = srcText[i];
+    //        setInterval(function() {
+    //                if(i == srcText.length) {
+    //                    clearInterval(this);
+    //                    return;
+    //                };
+    //                i++;
+    //                result += srcText[i].replace("\n", "<br />");
+    //                $("#storyWell").append(result);
+    //            },
+    //            50); // the period between every character and next one, in milliseonds.
+    //    });
+
+    //function typeIt() {
+    ////    var $el = $('#storyWell'),
+    ////        txt = $el.text(),
+    ////        txtLen = txt.length,
+    ////        timeOut,
+    //        char = 0;
+    ////
+    ////    $el.text('|');
+    //
+    //    var humanize = Math.round(Math.random() * (200 - 30)) + 30;
+    //
+    //timeOut = setTimeout(function() {
+    //        char++;
+    //        var type = txt.substring(0, char);
+    //        $el.text(type + '|');
+    //        typeIt();
+    //
+    //        if (char == txtLen) {
+    //            $el.text($el.text().slice(0, -1)); // remove the '|'
+    //            clearTimeout(timeOut);
+    //        }
+    //
+    //    }, humanize);
+    //}
+    //
+
+
+    //function typeIt() {
+    //    var $el = $('#storyWell'),
+    //        txt = $el.text(),
+    //        txtLen = txt.length,
+    //        timeOut,
+    //        char = 0;
+    //
+    //    $el.text('|');
+    //
+    //    var humanize = Math.round(Math.random() * (200 - 30)) + 30;
+    //    timeOut = setTimeout(function() {
+    //        char++;
+    //        var type = txt.substring(0, char);
+    //        $el.text(type + '|');
+    //        typeIt();
+    //
+    //        if (char == txtLen) {
+    //            $el.text($el.text().slice(0, -1)); // remove the '|'
+    //            clearTimeout(timeOut);
+    //        }
+    //
+    //    }, humanize);
+    //}
+
 
 
 

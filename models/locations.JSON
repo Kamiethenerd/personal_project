@@ -14,7 +14,7 @@
       "entrance": 1,
       "forward": 1
       },
-      "objects": null,
+      "objects": "a rock",
       "enemies": false
     },
     {
@@ -37,7 +37,7 @@
       "description": "The Fortune Tellers looks up from her cards./n'Hello! I've been waiting for you.' ",
       "hint": "go back",
       "actions": {
-        "dollar": "She takes your money and a mist begins to swirl from nowhere.'Someone is thinking about you' She says,'someone far away from here' "
+        "dollar": "She takes your money and a mist begins to swirl from nowhere.'Someone is thinking about you' She says,'someone far away from here'  "
       },
       "exits": {
       "back": 1
