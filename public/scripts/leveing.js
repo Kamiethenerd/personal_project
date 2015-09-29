@@ -1,16 +1,11 @@
- var gameLogic = require('/gameLogic)';
 
-
-module.exports = {
-    //Leveling Mechanic
-    //level switch for upgrades
-    levelUp:function(x){
+    function levelUp(x){
         var upLevel = "Congrats! you leveled up!";
         var upStrength = "You are now stronger!";
         var upDef = "Defenses up!";
 
         switch (x) {
-            case 500:
+            case 100:
                 appendStoryWell(upLevel);
                 currentLevel = 2;
                 appendStoryWell(upStrength);
@@ -19,7 +14,7 @@ module.exports = {
                 def +=3;
 
                 break;
-            case 1200:
+            case 300:
                 appendStoryWell(upLevel);
                 currentLevel = 3;
                 appendStoryWell(upStrength);
@@ -29,7 +24,7 @@ module.exports = {
                 backpack.push("Slippers");
 
                 break;
-            case 2000:
+            case 700:
                 appendStoryWell(upLevel);
                 currentLevel = 4;
                 appendStoryWell(upStrength);
@@ -38,7 +33,7 @@ module.exports = {
                 def +=3;
 
                 break;
-            case 2900:
+            case 1100:
                 appendStoryWell(upLevel);
                 currentLevel = 5;
                 appendStoryWell(upStrength);
@@ -47,10 +42,11 @@ module.exports = {
                 def +=3;
 
                 break;
-            //default:
-            //    break;
+            default:
+                console.log("no level up");
+                break;
         }
-    }
-};
+    };
+
 
 

@@ -2,9 +2,12 @@
 extends layout
 
 block content
-    .gameInterface#fluidContainer
-        h2#locationDisplay.text-info
-        h2#xpDisplay.text-success
+    #gameInterface.fluidContainer
+        ul#displays.list-inline
+            li
+                h2#locationDisplay.text-info
+            li
+                h2#xpDisplay.text-success
         #storyWell.well.well-lg
         p INPUT
             input#userInput.well-sm(type='text')

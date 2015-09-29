@@ -11,6 +11,18 @@ a {
   height:200px;
   overflow-y:auto;
 }
+.playerText{
+    color: #66ff33;
+}
+#displays ul{
+    list-style-type: none;
+}
+#displays ul li{
+    display: inline;
+}
+#xpDisplay{
+
+}
 
 #storyWell p{
   font-family: 'Special Elite', cursive;

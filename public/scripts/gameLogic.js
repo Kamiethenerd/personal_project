@@ -6,8 +6,8 @@ $(document).ready(function() {
     var st = 0;
     var def = 0;
     var currentLevel = 1;
-    var backpack = [" dollar", " piece of lint"];
-    var keywords = ["go", "take", "use", "attack", "hint"];
+    var backpack = ["dollar", "piece of lint"];
+
 
     var areaId = 0;
     var userInput = [];
@@ -20,10 +20,13 @@ $(document).ready(function() {
     var hint = [];
     var exits = [];
     var objectList = [];
+    var possibleActions = [];
+    var enemiesforArea;
+    var inBattle;
 
 
     // when loading page
-    function opening() {
+    function newGameStart() {
         var load = "loading . . . ";
         var start = "please enter your name";
 
@@ -39,7 +42,7 @@ $(document).ready(function() {
     }
 
 
-    opening();
+    newGameStart();
 
     //separating out the user input
     function separateText() {
@@ -68,13 +71,13 @@ $(document).ready(function() {
     // add player text to story log
     function playerText(next) {
         var $p = $('<p>');
-        $p.append("Player: " + userInput);
+        $p.append("Player: " + userInput).attr("class", "playerText");
         $('#storyWell').append($p);
         return next
     }
 
 
-    // handling inputs
+    // input handler
     $("#userInput").keypress(function (e) {
         if (e.which == 13) {
             userInput = $(this).val();
@@ -93,36 +96,53 @@ $(document).ready(function() {
     function verbSwitch() {
         actionWord = actionWord.toLowerCase();
         //var $p = $('<p>');
-
-        switch (actionWord) {
-            case "go":
-                vsExits(exits);
-                break;
-            case "take":case "grab":
-                takeCheck(descWord);
-                console.log('Taking ' + descWord);
-                break;
-            case 'use':case "give":
-                useCheck(descWord);
-                console.log("using " + descWord);
-                break;
-            case 'hint':
-                appendStoryWell(hint);
-                console.log("getting hint..." + hint);
-                break;
-            case 'backpack':
-                var pack = " In your backpack you have " + backpack;
-                appendStoryWell(pack);
-                console.log("what's in that back pack?");
-                break;
-            case 'fight':
-                battle.battle(currentLevel,st,def);
-                console.log('fight!')
-                break;
-            default:
-                var idk = "I don't know what you want";
-                appendStoryWell(idk);
-
+        if (inBattle==false) {
+            switch (actionWord) {
+                case "go":
+                    vsExits(exits);
+                    break;
+                case "take":
+                case "grab":
+                    takeCheck(descWord);
+                    console.log('Taking ' + descWord);
+                    break;
+                case 'use':
+                case "give":
+                    actionVS(possibleActions);
+                    console.log("using " + descWord);
+                    break;
+                case 'hint':
+                    appendStoryWell(hint);
+                    console.log("getting hint..." + hint);
+                    break;
+                case 'backpack':
+                    var pack = " In your backpack you have " + backpack;
+                    appendStoryWell(pack);
+                    console.log("what's in that back pack?");
+                    break;
+                default :
+                    var idk = "I don't know what you want";
+                    appendStoryWell(idk);
+                    break;
+            }
+        }else{
+            switch (actionWord){
+                case 'attack':
+                    //battle.battle(currentLevel,st,def);
+                    playByPlay();
+                    console.log('fight!');
+                    break;
+                case 'attack!': //egg
+                    st += 1;
+                    console.log("temporary boost!");
+                    playByPlay();
+                    st -= 1;
+                    break;
+                default :
+                    var msg = "you should attack!";
+                    appendStoryWell(msg);
+                    break;
+            }
         }
     }
 
@@ -134,12 +154,14 @@ $(document).ready(function() {
         objectList = [];
 
         //console.log(obj);
-        currentLocationStuff.push(obj);
+        //currentLocationStuff.push(obj);
         currentArea.push(obj.locName);
         areaText.push(obj.description);
         hint.push(obj.hint);
         exits = obj.exits;
         objectList.push(obj.objects);
+        enemiesforArea = obj.enemies;
+        possibleActions = obj.actions;
         //console.log(currentArea + ", " + hint + ", " + objectList + ", ");
         //addAreaText(areaText);
 
@@ -165,6 +187,8 @@ $(document).ready(function() {
         appendStoryWell(areaText);
         console.log('loading text for' + currentArea);
         $('#locationDisplay').text(currentArea);
+        xp += 5;
+        $('#xpDisplay').text("XP: " + xp);
     }
 
     //check the descword againts the exits
@@ -209,7 +233,7 @@ $(document).ready(function() {
                 var msg = "You added " + objectList[i] + " to your backpack!";
                 backpack.push(objectList[i]);
                 appendStoryWell(msg);
-                found = true;
+                foundbp = true;
             } else {
                 console.log("not an item match");
             }
@@ -221,7 +245,8 @@ $(document).ready(function() {
     }
 
     function useCheck(item) {
-        found = false;
+        //found in backpack?
+
         console.log('searching your backpack . . .');
 
         for (var i = 0; i <= backpack.length; i++) {
@@ -233,17 +258,61 @@ $(document).ready(function() {
                 backpack.splice(i, 1);
                 console.log(backpack[i]);
                 appendStoryWell(msg);
-                found = true;
+                foundbp = true;
             } else {
                 console.log("not an item match");
             }
         }
-        if (found == false) {
-            var msg = item + " doesn't seem to be in your backpack.";
-            appendStoryWell(msg);
+    }
+
+
+    function actionVS(obj){
+        console.log("checking available actions");
+        //found in action list?
+        foundAL = false;
+        //found n backpack?
+        foundbp = false;
+        action = [];
+
+        for (var key in obj) {
+            //alert(' name=' + key + ' value=' + obj[key]);
+
+            if (descWord == key) {
+
+                console.log(descWord + " matched!");
+                action = obj[key];
+                useCheck(descWord);
+                foundAL = true;
+
+            } else {
+                console.log('you cannot use that here');
+            }
+
+            if (foundAL == true && foundbp == false) {
+                var msg = "You don't have that item in your backpack.";
+                appendStoryWell(msg);
+            } else if (foundAL == false && foundbp == true){
+                var msg = "You can't use that here.";
+                appendStoryWell(msg);
+            } else if(foundAL == true && foundbp == true){
+                var msg = "You added " + action.object + " to your backpack!";
+                console.log(action.text);
+                appendStoryWell(action.text);
+                backpack.push(action.object);
+                xp += action.xp;
+                appendStoryWell(msg);
+                $('#xpDisplay').text("XP: " + xp);
+            } else{
+                var msg =" That's not possible";
+                appendStoryWell(msg);
+            }
         }
+
     }
 });
+
+
+
 
 
 

@@ -35,9 +35,13 @@
     {
       "locName": "Fortune Teller's Tent",
       "description": "The Fortune Tellers looks up from her cards./n'Hello! I've been waiting for you.' ",
-      "hint": "go back",
+      "hint": "use dollar or go back",
       "actions": {
-        "dollar": "She takes your money and a mist begins to swirl from nowhere.'Someone is thinking about you' She says,'someone far away from here'  "
+        "dollar": {
+          "text":"She takes your money and a mist begins to swirl from nowhere.'Someone is thinking about you' She says,'someone far away from here, they want you to have this.' She begins digging through a small cloth bag attached to her hip and pulls out a small gem and hands it to you.",
+          "object": "Gem",
+          "xp": 20
+        }
       },
       "exits": {
       "back": 1
@@ -57,6 +61,20 @@
       },
       "objects": null,
       "enemies": false
+    },
+    {
+      "locName": "Zombie Zoo Entrance",
+      "description": "You move debris out of the way so you can shimmy into the zoo, things are too quiet in here. You notice a key lying on the ground. The path goes off forward in front of you but you can also see it split to the right",
+      "hint": "take key,  Go forward, right, or back but probably back for now",
+      "actions": null,
+      "exits": {
+        "front gate": 1,
+        "back": 1,
+        "inside": 4
+      },
+      "objects":"key",
+      "enemies": false
+      }
     }
   ]
 }
