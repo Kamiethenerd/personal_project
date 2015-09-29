@@ -4,8 +4,8 @@ var router = express.Router();
 var path = require('path');
 
 router.get('/:id', function(req, res, next){
-    console.log('loading area');
+    console.log('loading monster');
     //console.log(locations.locations[req.params.id]);
-    res.json ({monsters :monsters.level1[0]});
+    res.json ({monsters :monsters.monsters.level1[0]});
 });
 module.exports = router;

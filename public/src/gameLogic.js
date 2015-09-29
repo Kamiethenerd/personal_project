@@ -1,34 +1,35 @@
+var xp = 0;
+var st =  2;
+var def = 2;
+var currentLevel = 1;
+var backpack = ["dollar", "piece of lint"];
+
+
+var areaId = 0;
+var userInput = [];
+var actionWord = [];
+var descWord = [];
+
+var currentLocationStuff = [];
+var currentArea = [];
+var areaText = [];
+var hint = [];
+var exits = [];
+var objectList = [];
+var possibleActions = [];
+var enemiesforArea = false;
+var inBattle = false;
+
 $(document).ready(function() {
     //var battle = require("./battle.js");
     // Game variables
     //user stuff
-    var xp = 0;
-    var st = 0;
-    var def = 0;
-    var currentLevel = 1;
-    var backpack = ["dollar", "piece of lint"];
-
-
-    var areaId = 0;
-    var userInput = [];
-    var actionWord = [];
-    var descWord = [];
-
-    var currentLocationStuff = [];
-    var currentArea = [];
-    var areaText = [];
-    var hint = [];
-    var exits = [];
-    var objectList = [];
-    var possibleActions = [];
-    var enemiesforArea;
-    var inBattle;
 
 
     // when loading page
     function newGameStart() {
         var load = "loading . . . ";
-        var start = "please enter your name";
+        //var start = "please enter your name";
 
         appendStoryWell(load);
         console.log(areaId);
@@ -58,14 +59,7 @@ $(document).ready(function() {
        }
     }
 
-    function appendStoryWell(t) {
-        var $p = $('<p>');
 
-        $p.text(t);
-        $('#storyWell').scrollTop($('#storyWell')[0].scrollHeight);
-        $('#storyWell').append($p);
-
-    }
 
 
     // add player text to story log
@@ -133,10 +127,10 @@ $(document).ready(function() {
                     console.log('fight!');
                     break;
                 case 'attack!': //egg
-                    st += 1;
+                    monDef -= 1;
                     console.log("temporary boost!");
                     playByPlay();
-                    st -= 1;
+                    monDef += 1;
                     break;
                 default :
                     var msg = "you should attack!";
@@ -145,174 +139,199 @@ $(document).ready(function() {
             }
         }
     }
+});
+function appendStoryWell(t) {
+    var $p = $('<p>');
 
-    function newArea(obj) {
-        currentLocationStuff = [];
-        currentArea = [];
-        areaText = [];
-        hint = [];
-        objectList = [];
+    $p.text(t);
+    $('#storyWell').scrollTop($('#storyWell')[0].scrollHeight);
+    $('#storyWell').append($p);
 
-        //console.log(obj);
-        //currentLocationStuff.push(obj);
-        currentArea.push(obj.locName);
-        areaText.push(obj.description);
-        hint.push(obj.hint);
-        exits = obj.exits;
-        objectList.push(obj.objects);
-        enemiesforArea = obj.enemies;
-        possibleActions = obj.actions;
-        //console.log(currentArea + ", " + hint + ", " + objectList + ", ");
-        //addAreaText(areaText);
+}
+function newArea(obj) {
+    currentLocationStuff = [];
+    currentArea = [];
+    areaText = [];
+    hint = [];
+    objectList = [];
 
-    }
+    //console.log(obj);
+    //currentLocationStuff.push(obj);
+    currentArea.push(obj.locName);
+    areaText.push(obj.description);
+    hint.push(obj.hint);
+    exits = obj.exits;
+    objectList.push(obj.objects);
+    enemiesforArea = obj.enemies;
+    possibleActions = obj.actions;
+    //console.log(currentArea + ", " + hint + ", " + objectList + ", ");
+    //addAreaText(areaText);
 
-    // pulling JSON
-    function getArea(id) {
-        $.ajax({
-            type: 'GET',
-            dataType: 'json',
-            url: '/locations/' + id,
-            complete: function () {
-                console.log('Ajax for getting area complete');
-            },
-            success: function (data) {
-                newArea(data.location);
-            }
-        });
+}
 
-    }
-
-    function addAreaText() {
-        appendStoryWell(areaText);
-        console.log('loading text for' + currentArea);
-        $('#locationDisplay').text(currentArea);
-        xp += 5;
-        $('#xpDisplay').text("XP: " + xp);
-    }
-
-    //check the descword againts the exits
-    function vsExits(obj) {
-        console.log("comparing exits . . .");
-        var found = false;
-
-        for (var key in obj) {
-            //alert(' name=' + key + ' value=' + obj[key]);
-
-            if (descWord == key) {
-
-                console.log(descWord + " matched!");
-                areaId = obj[key];
-                console.log(areaId);
-                getArea(areaId);
-                found = true;
-
-                setTimeout(function () {
-                    console.log("area text: " + areaText);
-                    addAreaText(areaText);
-                }, 2000);
-
-            } else {
-                console.log('not an exit');
-            }
+// pulling JSON
+function getArea(id) {
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: '/locations/' + id,
+        complete: function () {
+            console.log('Ajax for getting area complete');
+        },
+        success: function (data) {
+            newArea(data.location);
         }
-        //console.log(found);
-        if (found == false) {
-            var nope = "Exit requested does not exist.";
-            appendStoryWell(nope);
+    });
+
+}
+
+function addAreaText() {
+    appendStoryWell(areaText);
+    console.log('loading text for' + currentArea);
+    $('#locationDisplay').text(currentArea);
+    xp += 5;
+    $('#xpDisplay').text("XP: " + xp);
+    levelUp(xp);
+}
+
+//check the descword againts the exits
+function vsExits(obj) {
+    console.log("comparing exits . . .");
+    var found = false;
+
+    for (var key in obj) {
+        //alert(' name=' + key + ' value=' + obj[key]);
+
+        if (descWord == key) {
+
+            console.log(descWord + " matched!");
+            areaId = obj[key];
+            console.log(areaId);
+            getArea(areaId);
+            found = true;
+
+            setTimeout(function () {
+                //console.log("area text: " + areaText);
+                //addAreaText(areaText);
+                battleCheck();
+
+            }, 2000);
+
+        } else {
+            console.log('not an exit');
         }
     }
+    //console.log(found);
+    if (found == false) {
+        var nope = "Exit requested does not exist.";
+        appendStoryWell(nope);
+    }
+}
 
-    function takeCheck(item) {
-        found = false;
+function takeCheck(item) {
+    found = false;
 
-        for (var i = 0; i <= objectList.length; i++) {
-            console.log(objectList[i]);
+    for (var i = 0; i <= objectList.length; i++) {
+        console.log(objectList[i]);
 
-            if (item == objectList[i]) {
-                var msg = "You added " + objectList[i] + " to your backpack!";
-                backpack.push(objectList[i]);
-                appendStoryWell(msg);
-                foundbp = true;
-            } else {
-                console.log("not an item match");
-            }
+        if (item == objectList[i]) {
+            var msg = "You added " + objectList[i] + " to your backpack!";
+            backpack.push(objectList[i]);
+            appendStoryWell(msg);
+            foundbp = true;
+        } else {
+            console.log("not an item match");
         }
-        if (found == false) {
-            var msg = item + " is not an available item to pick-up.";
+    }
+    if (found == false) {
+        var msg = item + " is not an available item to pick-up.";
+        appendStoryWell(msg);
+    }
+}
+
+function useCheck(item) {
+    //found in backpack?
+
+    console.log('searching your backpack . . .');
+
+    for (var i = 0; i <= backpack.length; i++) {
+        console.log(backpack[i]);
+
+        if (item == backpack[i]) {
+
+            var msg = "You used" + backpack[i] + "!";
+            backpack.splice(i, 1);
+            console.log(backpack[i]);
+            appendStoryWell(msg);
+            foundbp = true;
+        } else {
+            console.log("not an item match");
+        }
+    }
+}
+
+
+function actionVS(obj){
+    console.log("checking available actions");
+    //found in action list?
+    foundAL = false;
+    //found n backpack?
+    foundbp = false;
+    action = [];
+
+    for (var key in obj) {
+        //alert(' name=' + key + ' value=' + obj[key]);
+
+        if (descWord == key) {
+            console.log(descWord + " matched!");
+            action = obj[key];
+            useCheck(descWord);
+            foundAL = true;
+        } else {
+            console.log('you cannot use that here');
+        }
+
+        if (foundAL == true && foundbp == false) {
+            var msg = "You don't have that item in your backpack.";
+            appendStoryWell(msg);
+        } else if (foundAL == false && foundbp == true){
+            var msg = "You can't use that here.";
+            appendStoryWell(msg);
+        } else if(foundAL == true && foundbp == true){
+            var msg = "You added " + action.object + " to your backpack!";
+            console.log(action.text);
+            appendStoryWell(action.text);
+            backpack.push(action.object);
+            xp += action.xp;
+            appendStoryWell(msg);
+            $('#xpDisplay').text("XP: " + xp);
+            levelUp(xp);
+        } else{
+            var msg =" That's not possible";
             appendStoryWell(msg);
         }
     }
 
-    function useCheck(item) {
-        //found in backpack?
+}
 
-        console.log('searching your backpack . . .');
 
-        for (var i = 0; i <= backpack.length; i++) {
-            console.log(backpack[i]);
 
-            if (item == backpack[i]) {
-
-                var msg = "You used" + backpack[i] + "!";
-                backpack.splice(i, 1);
-                console.log(backpack[i]);
-                appendStoryWell(msg);
-                foundbp = true;
-            } else {
-                console.log("not an item match");
-            }
+function battleCheck(){
+    if (enemiesforArea == true){
+       chance = Math.floor(Math.random() * (6 - 1) + 1);
+        if (chance <= 3){
+            inBattle=true;
+            battle();
+        } else {
+            console.log("area text: " + areaText);
+            addAreaText(areaText);
         }
+    } else {
+        console.log("area text: " + areaText);
+        addAreaText(areaText);
     }
 
-
-    function actionVS(obj){
-        console.log("checking available actions");
-        //found in action list?
-        foundAL = false;
-        //found n backpack?
-        foundbp = false;
-        action = [];
-
-        for (var key in obj) {
-            //alert(' name=' + key + ' value=' + obj[key]);
-
-            if (descWord == key) {
-
-                console.log(descWord + " matched!");
-                action = obj[key];
-                useCheck(descWord);
-                foundAL = true;
-
-            } else {
-                console.log('you cannot use that here');
-            }
-
-            if (foundAL == true && foundbp == false) {
-                var msg = "You don't have that item in your backpack.";
-                appendStoryWell(msg);
-            } else if (foundAL == false && foundbp == true){
-                var msg = "You can't use that here.";
-                appendStoryWell(msg);
-            } else if(foundAL == true && foundbp == true){
-                var msg = "You added " + action.object + " to your backpack!";
-                console.log(action.text);
-                appendStoryWell(action.text);
-                backpack.push(action.object);
-                xp += action.xp;
-                appendStoryWell(msg);
-                $('#xpDisplay').text("XP: " + xp);
-            } else{
-                var msg =" That's not possible";
-                appendStoryWell(msg);
-            }
-        }
-
-    }
-});
-
-
-
+}
 
 
 

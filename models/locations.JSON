@@ -60,7 +60,7 @@
         "inside": 4
       },
       "objects": null,
-      "enemies": false
+      "enemies": true
     },
     {
       "locName": "Zombie Zoo Entrance",
@@ -73,8 +73,8 @@
         "inside": 4
       },
       "objects":"key",
-      "enemies": false
-      }
+      "enemies": true
+
     }
   ]
 }

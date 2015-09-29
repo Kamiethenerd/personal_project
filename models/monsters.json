@@ -10,7 +10,12 @@
         "monName": "A Not Particularly Scary Zombie",
         "monSt": 1,
         "monDF": 1,
-        "lvl": 1
+        "lvl": 1,
+        "rewards":{
+          "text": "You double tapped his face!",
+          "item": "brainz",
+          "xp": 25
+        }
       }
     ],
     "level2": [
@@ -18,7 +23,8 @@
         "monName": "A Kinda Scary Zombie",
         "monSt": 2,
         "monDF": 2,
-        "lvl": 2
+        "lvl": 2,
+        "rewards":{}
       }
     ],
     "level 3": [],
