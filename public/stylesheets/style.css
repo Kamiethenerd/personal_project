@@ -6,6 +6,9 @@ body {
 a {
   color: #00B7FF;
 }
+p {
+  padding-bottom: 20px;
+}
 
 #storyWell {
   height:200px;
@@ -21,7 +24,11 @@ a {
     display: inline;
 }
 #xpDisplay{
-
+  text-align: right;
+}
+#inputs{
+  float:right;
+  padding: 20px;
 }
 
 #storyWell p{

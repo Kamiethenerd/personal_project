@@ -19,7 +19,7 @@
     },
     {
       "locName": "Entrance",
-      "description": "Through the entrance you come to an open area to your left is a fortune teller and to your right is the freak show, in front of you is a broken down gateway with a sign above it that says 'Zombie Zoo' ",
+      "description": "Through the entrance you come to an open area to your left is a fortune teller with a sign outside of her tent that says 'Fortunes only a dollar!' and to your right is the freak show, in front of you is a broken down gateway with a sign above it that says 'Zombie Zoo' ",
       "hint": "go left, right, forward, back or front gate",
       "actions": null,
       "exits": {
@@ -34,13 +34,14 @@
     },
     {
       "locName": "Fortune Teller's Tent",
-      "description": "The Fortune Tellers looks up from her cards./n'Hello! I've been waiting for you.' ",
+      "description": "The Fortune Tellers looks up from her cards.'Hello! I've been waiting for you.' ",
       "hint": "use dollar or go back",
       "actions": {
         "dollar": {
           "text":"She takes your money and a mist begins to swirl from nowhere.'Someone is thinking about you' She says,'someone far away from here, they want you to have this.' She begins digging through a small cloth bag attached to her hip and pulls out a small gem and hands it to you.",
-          "object": "Gem",
-          "xp": 20
+          "object": "gem",
+          "xp": 20,
+          "exits": null
         }
       },
       "exits": {
@@ -56,8 +57,7 @@
       "actions": null,
       "exits": {
         "front gate": 1,
-        "back": 1,
-        "inside": 4
+        "back": 1
       },
       "objects": null,
       "enemies": true
@@ -65,16 +65,63 @@
     {
       "locName": "Zombie Zoo Entrance",
       "description": "You move debris out of the way so you can shimmy into the zoo, things are too quiet in here. You notice a key lying on the ground. The path goes off forward in front of you but you can also see it split to the right",
-      "hint": "take key,  Go forward, right, or back but probably back for now",
+      "hint": "take key,  Go forward, right, or back ",
       "actions": null,
       "exits": {
-        "front gate": 1,
         "back": 1,
-        "inside": 4
+        "right": 6,
+        "forward": 5
       },
       "objects":"key",
       "enemies": true
-
+    },
+    {
+      "locName": "Open Zombie Cage",
+      "description": "You reach a dead end with a zombie cage that looks like the door has been forced open from the inside. That would explain the zombies that seem to be roaming about.",
+      "hint": "go back",
+      "actions": null,
+      "exits": {
+        "back": 4
+      },
+      "objects":null,
+      "enemies": true
+    },
+    {
+      "locName": "Locked Zombie Cage",
+      "description": "You come to locked cage that appears to empty. There's a large lock on the door",
+      "hint": "use key or go back",
+      "actions": {
+        "key": {
+          "text": "The cage opens and you notice a small cave opening in the far back of the cage",
+          "object": null,
+          "xp": 20,
+          "exit":
+            {"cave": 7}
+        }
+      },
+      "exits": {
+        "back": 4
+      },
+      "objects":"",
+      "enemies": true
+    },
+    {
+      "locName": "Mysterious Cave",
+      "description": "In the cave there is a large rock face with ornate carvings",
+      "hint": "The gem the fortune teller gave you is the right size to fit in the carvings",
+      "actions": {
+        "gem": {
+          "text": "A small compartment opens and  you reach in to find a small trophy with these words on it 'Congrats! that's all the zombie carnival of doom has for you currently, but feel free to continue to wander around and fight Zeds to your hearts content'",
+          "object": "completion trophy",
+          "xp": 20,
+          "exit":null
+        }
+      },
+      "exits": {
+        "back": 6
+      },
+      "objects":"",
+      "enemies": true
     }
   ]
 }

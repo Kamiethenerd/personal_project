@@ -13,6 +13,7 @@ var monHealth = 0;
 
 function battle() {
     inBattle = true;
+    monsterPicker(currentLevel);
 
     getEnemy(currentMonsterId);
     setTimeout(function () {
@@ -27,6 +28,41 @@ function battle() {
         playByPlay();
 
     }, 2000);
+}
+
+function monsterPicker(lvl){
+    console.log("picking random monster");
+    idNum = 0;
+    function randomMon(min,max){
+        idNum = Math.floor(Math.random() * (max - min) + min)
+    }
+    switch (lvl) {
+        case 1:
+            randomMon(0, 4);
+            console.log("idNum:"+idNum);
+            currentMonsterId = idNum;
+            break;
+        case 2:
+            randomMon(0, 8);
+            console.log("idNum:"+idNum);
+            currentMonsterId = idNum;
+            break;
+        case 3:
+            randomMon(0, 12);
+            console.log("idNum:"+idNum);
+            currentMonsterId = idNum;
+            break;
+        case 4:
+            randomMon(0, 16);
+            console.log("idNum:"+idNum);
+            currentMonsterId = idNum;
+            break;
+        case 5:
+            randomMon(0, 20);
+            console.log("idNum:"+idNum);
+            currentMonsterId = idNum;
+            break;
+    }
 }
 
 
@@ -78,10 +114,13 @@ function playByPlay() {
 }
 
 function winRewards(){
-    var msg = "You added " + monsterRewards.item + " to your backpack!";
-    console.log(monsterRewards.text);
+    if(monsterRewards.item!=null) {
+        var msg = "You added " + monsterRewards.item + " to your backpack!";
+        backpack.push(monsterRewards.item);
+    } else {
+        console.log("no items for you")
+    }
     appendStoryWell(monsterRewards.text);
-    backpack.push(monsterRewards.item);
     xp += monsterRewards.xp;
     appendStoryWell(msg);
     $('#xpDisplay').text("XP: " + xp);
@@ -95,7 +134,7 @@ function getEnemy(id) {
         dataType: 'json',
         url: '/monsters/' + id,
         complete: function () {
-            console.log('Ajax for getting area complete');
+            console.log('Ajax for getting monster complete');
         },
         success: function (data) {
             console.log("monster stuff!");

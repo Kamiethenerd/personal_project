@@ -4,8 +4,7 @@
     "author": "Kamie Kehrwald",
     "welcome": ""
   },
-  "monsters": {
-    "level1": [
+  "monsters":[
       {
         "monName": "A Not Particularly Scary Zombie",
         "monSt": 1,
@@ -16,19 +15,83 @@
           "item": "brainz",
           "xp": 25
         }
-      }
-    ],
-    "level2": [
+      },
+      {
+        "monName": "One Armed Zombie",
+        "monSt": 1,
+        "monDF": 1,
+        "lvl": 1,
+        "rewards":{
+          "text": "Splatted!",
+          "item": null,
+          "xp": 25
+        }
+      },
+      {
+        "monName": "Crawling Legless Zombie",
+        "monSt": 1,
+        "monDF": 1,
+        "lvl": 1,
+        "rewards":{
+          "text": "He was slow but bitey.",
+          "item": null,
+          "xp": 25
+        }
+      },
+      {
+        "monName": "Decaying Zombie",
+        "monSt": 1,
+        "monDF": 1,
+        "lvl": 1,
+        "rewards":{
+          "text": "Smelly!",
+          "item": null,
+          "xp": 25
+        }
+      },
+      {
+        "monName": "Shambling Lady Zombie",
+        "monSt": 2,
+        "monDF": 2,
+        "lvl": 2,
+        "rewards":{
+          "text": "Deadzo",
+          "item": "brainz",
+          "xp": 35
+        }
+      },
       {
         "monName": "A Kinda Scary Zombie",
         "monSt": 2,
         "monDF": 2,
         "lvl": 2,
-        "rewards":{}
+        "rewards":{
+          "text": "Spooky scary!",
+          "item": null,
+          "xp": 35
+        }
+      },
+      {
+        "monName": "Shambling Zombie",
+        "monSt": 2,
+        "monDF": 2,
+        "lvl": 2,
+        "rewards":{
+          "text": "boom. headshot!",
+          "item": null,
+          "xp": 35
+        }
+      },
+      {
+        "monName": "A Kinda Scary Zombie",
+        "monSt": 2,
+        "monDF": 2,
+        "lvl": 2,
+        "rewards":{
+          "text": "Kill'd!",
+          "item": null,
+          "xp": 35
+        }
       }
-    ],
-    "level 3": [],
-    "level 4": [],
-    "level 5": []
-  }
+  ]
 }

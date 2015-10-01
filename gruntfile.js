@@ -10,7 +10,8 @@ module.exports = function(grunt) {
                 // the files to concatenate
                 src: ['public/src/gameLogic.js',
                     'public/src/leveling.js',
-                    'public/src/battle.js'],
+                    'public/src/battle.js',
+                    'public/src/save.js'],
                 // the location of the resulting JS file
                 dest: 'public/scripts/fullGame.js'
             }

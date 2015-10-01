@@ -21,11 +21,8 @@ var enemiesforArea = false;
 var inBattle = false;
 
 $(document).ready(function() {
-    //var battle = require("./battle.js");
-    // Game variables
-    //user stuff
-
-
+    $('#saveAlert').hide();
+    $('#loadAlert').hide();
     // when loading page
     function newGameStart() {
         var load = "loading . . . ";
@@ -41,7 +38,6 @@ $(document).ready(function() {
             addAreaText(areaText);
         }, 1000);
     }
-
 
     newGameStart();
 
@@ -59,9 +55,6 @@ $(document).ready(function() {
        }
     }
 
-
-
-
     // add player text to story log
     function playerText(next) {
         var $p = $('<p>');
@@ -69,7 +62,6 @@ $(document).ready(function() {
         $('#storyWell').append($p);
         return next
     }
-
 
     // input handler
     $("#userInput").keypress(function (e) {
@@ -82,7 +74,16 @@ $(document).ready(function() {
             console.log('first word: ' + actionWord + ", everything else: " + descWord);
             $('input[type="text"], textarea').val('');
         }
+    });
 
+    //save handler
+    $("#saveBtn").click(function (e){
+        saveProcess();
+    });
+
+    //load handler
+    $("#loadBtn").click(function(e){
+        loadProcess();
     });
 
 
@@ -113,6 +114,10 @@ $(document).ready(function() {
                     var pack = " In your backpack you have " + backpack;
                     appendStoryWell(pack);
                     console.log("what's in that back pack?");
+                    break;
+                case "q":
+                    var msg ="knock it off, Danilo.";
+                    appendStoryWell(msg);
                     break;
                 default :
                     var idk = "I don't know what you want";
@@ -239,6 +244,7 @@ function takeCheck(item) {
             backpack.push(objectList[i]);
             appendStoryWell(msg);
             foundbp = true;
+            found = true;
         } else {
             console.log("not an item match");
         }
@@ -258,8 +264,7 @@ function useCheck(item) {
         console.log(backpack[i]);
 
         if (item == backpack[i]) {
-
-            var msg = "You used" + backpack[i] + "!";
+            var msg = "You used " + backpack[i] + "!";
             backpack.splice(i, 1);
             console.log(backpack[i]);
             appendStoryWell(msg);
@@ -303,6 +308,7 @@ function actionVS(obj){
             appendStoryWell(action.text);
             backpack.push(action.object);
             xp += action.xp;
+            addExit(action.exit);
             appendStoryWell(msg);
             $('#xpDisplay').text("XP: " + xp);
             levelUp(xp);
@@ -314,7 +320,14 @@ function actionVS(obj){
 
 }
 
+function addExit(obj){
+    for (var key in obj) {
+        exits[key]= obj[key];
+    }
 
+    console.log(exits)
+
+}
 
 function battleCheck(){
     if (enemiesforArea == true){
@@ -418,14 +431,14 @@ function battleCheck(){
         var upDef = "Defenses up!";
 
 
-        if (currentLevel == 1 && x >= 50) {
+        if (currentLevel == 1 && x >= 100) {
             appendStoryWell(upLevel);
             currentLevel = 2;
             appendStoryWell(upStrength);
             st += 2;
             appendStoryWell(upDef);
             def += 3;
-        } else if (currentLevel == 2 && x >= 100) {
+        } else if (currentLevel == 2 && x >= 200) {
             appendStoryWell(upLevel);
             currentLevel = 3;
             appendStoryWell(upStrength);
@@ -433,14 +446,14 @@ function battleCheck(){
             appendStoryWell(upDef);
             def += 1;
             backpack.push("Slippers");
-        } else if (currentLevel == 3 && x >= 150) {
+        } else if (currentLevel == 3 && x >= 300) {
             appendStoryWell(upLevel);
             currentLevel = 4;
             appendStoryWell(upStrength);
             st += 2;
             appendStoryWell(upDef);
             def += 3;
-        } else if (currentLevel == 4 && x >= 200) {
+        } else if (currentLevel == 4 && x >= 500) {
             appendStoryWell(upLevel);
             currentLevel = 5;
             appendStoryWell(upStrength);
@@ -469,6 +482,7 @@ var monHealth = 0;
 
 function battle() {
     inBattle = true;
+    monsterPicker(currentLevel);
 
     getEnemy(currentMonsterId);
     setTimeout(function () {
@@ -483,6 +497,41 @@ function battle() {
         playByPlay();
 
     }, 2000);
+}
+
+function monsterPicker(lvl){
+    console.log("picking random monster");
+    idNum = 0;
+    function randomMon(min,max){
+        idNum = Math.floor(Math.random() * (max - min) + min)
+    }
+    switch (lvl) {
+        case 1:
+            randomMon(0, 4);
+            console.log("idNum:"+idNum);
+            currentMonsterId = idNum;
+            break;
+        case 2:
+            randomMon(0, 8);
+            console.log("idNum:"+idNum);
+            currentMonsterId = idNum;
+            break;
+        case 3:
+            randomMon(0, 12);
+            console.log("idNum:"+idNum);
+            currentMonsterId = idNum;
+            break;
+        case 4:
+            randomMon(0, 16);
+            console.log("idNum:"+idNum);
+            currentMonsterId = idNum;
+            break;
+        case 5:
+            randomMon(0, 20);
+            console.log("idNum:"+idNum);
+            currentMonsterId = idNum;
+            break;
+    }
 }
 
 
@@ -534,10 +583,13 @@ function playByPlay() {
 }
 
 function winRewards(){
-    var msg = "You added " + monsterRewards.item + " to your backpack!";
-    console.log(monsterRewards.text);
+    if(monsterRewards.item!=null) {
+        var msg = "You added " + monsterRewards.item + " to your backpack!";
+        backpack.push(monsterRewards.item);
+    } else {
+        console.log("no items for you")
+    }
     appendStoryWell(monsterRewards.text);
-    backpack.push(monsterRewards.item);
     xp += monsterRewards.xp;
     appendStoryWell(msg);
     $('#xpDisplay').text("XP: " + xp);
@@ -551,7 +603,7 @@ function getEnemy(id) {
         dataType: 'json',
         url: '/monsters/' + id,
         complete: function () {
-            console.log('Ajax for getting area complete');
+            console.log('Ajax for getting monster complete');
         },
         success: function (data) {
             console.log("monster stuff!");
@@ -580,3 +632,63 @@ function addMonster(obj){
     monsterRewards = obj.rewards
 }
 
+function makeCode()
+{
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    for( var i=0; i < 6; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}
+
+function saveProcess() {
+    //alert(typeof backpack);
+    var backpackSave = JSON.stringify(backpack);
+    var saveCode = makeCode();
+    var saveObject = {
+        xp: xp,
+        strength: st,
+        defense: def,
+        currentLvl: currentLevel,
+        backpack: backpackSave,
+        area: areaId,
+        code: saveCode
+    };
+    console.log(saveCode);
+    console.log(saveObject);
+    $.ajax({
+        type: 'POST',
+        data: saveObject,
+        dataType: 'json',
+        url: '/save/'
+    }).done(function (response, textStatus, jqXHR) {
+        console.log('Save complete');
+
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        console.log(jqXHR, textStatus, errorThrown);
+    }).always(function () {
+        console.log('Saved!');
+        $('#saveCode').append(saveCode);
+        $('#saveAlert').show();
+    });
+}
+
+
+
+function loadProcess(){
+    var code = "Z6CZDI";
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: '/save/'+ code,
+        data: code,
+        complete: function () {
+            console.log('getting save data');
+        },
+        success: function (data) {
+            console.log(data);
+        }
+    });
+}

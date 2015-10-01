@@ -9,6 +9,22 @@ var routes = require('./routes/index');
 var users = require('./routes/game');
 var locations = require('./routes/locations');
 var monsters = require('./routes/monsters');
+var saves = require('./routes/save');
+
+var mongoose = require('mongoose');
+
+var mongoURI = "mongodb://localhost:27017/saves";
+var MongoDB = mongoose.connect(mongoURI).connection;
+
+MongoDB.on('error', function (err) {
+  console.log('mongodb connection error:', err);
+});
+
+MongoDB.once('open', function () {
+  console.log('mongodb connection open!');
+});
+
+
 
 var app = express();
 
@@ -28,6 +44,7 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/locations', locations);
 app.use('/monsters', monsters);
+app.use('/save', saves);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

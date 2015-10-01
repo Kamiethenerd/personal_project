@@ -6,6 +6,6 @@ var path = require('path');
 router.get('/:id', function(req, res, next){
     console.log('loading monster');
     //console.log(locations.locations[req.params.id]);
-    res.json ({monsters :monsters.monsters.level1[0]});
+    res.json ({monsters :monsters.monsters[req.params.id]});
 });
 module.exports = router;

@@ -21,11 +21,8 @@ var enemiesforArea = false;
 var inBattle = false;
 
 $(document).ready(function() {
-    //var battle = require("./battle.js");
-    // Game variables
-    //user stuff
-
-
+    $('#saveAlert').hide();
+    $('#loadAlert').hide();
     // when loading page
     function newGameStart() {
         var load = "loading . . . ";
@@ -41,7 +38,6 @@ $(document).ready(function() {
             addAreaText(areaText);
         }, 1000);
     }
-
 
     newGameStart();
 
@@ -59,9 +55,6 @@ $(document).ready(function() {
        }
     }
 
-
-
-
     // add player text to story log
     function playerText(next) {
         var $p = $('<p>');
@@ -69,7 +62,6 @@ $(document).ready(function() {
         $('#storyWell').append($p);
         return next
     }
-
 
     // input handler
     $("#userInput").keypress(function (e) {
@@ -82,7 +74,16 @@ $(document).ready(function() {
             console.log('first word: ' + actionWord + ", everything else: " + descWord);
             $('input[type="text"], textarea').val('');
         }
+    });
 
+    //save handler
+    $("#saveBtn").click(function (e){
+        saveProcess();
+    });
+
+    //load handler
+    $("#loadBtn").click(function(e){
+        loadProcess();
     });
 
 
@@ -113,6 +114,10 @@ $(document).ready(function() {
                     var pack = " In your backpack you have " + backpack;
                     appendStoryWell(pack);
                     console.log("what's in that back pack?");
+                    break;
+                case "q":
+                    var msg ="knock it off, Danilo.";
+                    appendStoryWell(msg);
                     break;
                 default :
                     var idk = "I don't know what you want";
@@ -239,6 +244,7 @@ function takeCheck(item) {
             backpack.push(objectList[i]);
             appendStoryWell(msg);
             foundbp = true;
+            found = true;
         } else {
             console.log("not an item match");
         }
@@ -258,8 +264,7 @@ function useCheck(item) {
         console.log(backpack[i]);
 
         if (item == backpack[i]) {
-
-            var msg = "You used" + backpack[i] + "!";
+            var msg = "You used " + backpack[i] + "!";
             backpack.splice(i, 1);
             console.log(backpack[i]);
             appendStoryWell(msg);
@@ -303,6 +308,7 @@ function actionVS(obj){
             appendStoryWell(action.text);
             backpack.push(action.object);
             xp += action.xp;
+            addExit(action.exit);
             appendStoryWell(msg);
             $('#xpDisplay').text("XP: " + xp);
             levelUp(xp);
@@ -314,7 +320,14 @@ function actionVS(obj){
 
 }
 
+function addExit(obj){
+    for (var key in obj) {
+        exits[key]= obj[key];
+    }
 
+    console.log(exits)
+
+}
 
 function battleCheck(){
     if (enemiesforArea == true){
