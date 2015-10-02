@@ -21,15 +21,13 @@ var enemiesforArea = false;
 var inBattle = false;
 
 $(document).ready(function() {
-    $('#saveAlert').hide();
-    $('#loadAlert').hide();
+
     // when loading page
     function newGameStart() {
         var load = "loading . . . ";
         //var start = "please enter your name";
 
         appendStoryWell(load);
-        console.log(areaId);
         getArea(areaId);
         //appendStoryWell(start);
 
@@ -83,7 +81,13 @@ $(document).ready(function() {
 
     //load handler
     $("#loadBtn").click(function(e){
-        loadProcess();
+        console.log('loading save...');
+        loadCode = $("#userInput").val();
+        loadMsg = "loading save for code:\n" + loadCode;
+        appendStoryWell(loadMsg);
+        loadProcess(loadCode);
+        $('input[type="text"], textarea').val('');
+
     });
 
 
@@ -145,16 +149,89 @@ $(document).ready(function() {
         }
     }
 });
-function appendStoryWell(t) {
+function appendStoryWellSpecial(t,cl) {
     var $p = $('<p>');
 
-    $p.text(t);
+    $($p).append(t).attr("class",cl);
+    $('#storyWell').append($p);
     $('#storyWell').scrollTop($('#storyWell')[0].scrollHeight);
+}
+
+function appendStoryWell(t) {
+    var $p = $('<p>');
+    var timeOut;
+    var char = 0;
+    var humanize = Math.round(Math.random() * (150 - 30)) + 30;
+    //$($p).append(t);
     $('#storyWell').append($p);
 
+    console.log(typeof t);
+    console.log(t);
+    if (typeof t == "object") {
+        t = t[0];
+    }
+
+    var txtLen = t.length;
+    //var displayText = "";
+    (function typeIt(){
+        timeOut = setTimeout(function () {
+        char++;
+        var type = t.substring(0, char);
+        $p.text(type + '|');
+        console.log(char);
+        //console.log();
+        typeIt();
+
+        //letter = t.charAt(i);
+
+        //console.log(type);
+        //$p.text(displayText += letter);
+        if (char == txtLen) {
+            $p.text($p.text().slice(0, -1)); // remove the '|'
+            clearTimeout(timeOut);
+        }
+
+
+
+    },humanize)
+    }());
+
+
+    //function typeIt() {
+    ////    var $el = $('#storyWell'),
+    ////        txt = $el.text(),
+    ////        txtLen = txt.length,
+    ////        timeOut,
+    //        char = 0;
+    ////
+    ////    $el.text('|');
+    //
+    //    var humanize = Math.round(Math.random() * (200 - 30)) + 30;
+    //
+    //timeOut = setTimeout(function() {
+    //        char++;
+    //        var type = txt.substring(0, char);
+    //        $el.text(type + '|');
+    //        typeIt();
+    //
+    //        if (char == txtLen) {
+    //            $el.text($el.text().slice(0, -1)); // remove the '|'
+    //            clearTimeout(timeOut);
+    //        }
+    //
+    //    }, humanize);
+    //}
+    //
+
+
+
+    $('#storyWell').scrollTop($('#storyWell')[0].scrollHeight);
+
 }
+
+
 function newArea(obj) {
-    currentLocationStuff = [];
+    //currentLocationStuff = [];
     currentArea = [];
     areaText = [];
     hint = [];
@@ -303,10 +380,17 @@ function actionVS(obj){
             var msg = "You can't use that here.";
             appendStoryWell(msg);
         } else if(foundAL == true && foundbp == true){
-            var msg = "You added " + action.object + " to your backpack!";
+            if(action.object !=null) {
+                var bpmsg = "You added " + action.object + " to your backpack!";
+                backpack.push(action.object);
+                appendStoryWellSpecial(bpmsg);
+            } else {
+                console.log("no items for you");
+            }
+            //if var msg = "You added " + action.object + " to your backpack!";
             console.log(action.text);
             appendStoryWell(action.text);
-            backpack.push(action.object);
+            //backpack.push(action.object);
             xp += action.xp;
             addExit(action.exit);
             appendStoryWell(msg);
@@ -546,12 +630,12 @@ function playByPlay() {
 
     if (playerHealth <= 0 && monHealth >= 0) { //monster wins
         var msg = " Oh no! " + currentMonster + " has knocked you out";
-        appendStoryWell(msg);
+        appendStoryWellSpecial(msg,"monster");
         inBattle = false;
 
     } else if (monHealth <= 0 && playerHealth >= 0) { //player wins
         var msg = "Huzzah! You have slain the mighty " + currentMonster + "!";
-        appendStoryWell(msg);
+        appendStoryWellSpecial(msg,"win");
         inBattle = false;
         winRewards();
         addAreaText();
@@ -564,7 +648,7 @@ function playByPlay() {
         monHealth -= damage;
         console.log('monster health:' + monHealth);
         var msg = "You did " + damage + " damage to " + currentMonster + "!";
-        appendStoryWell(msg);
+        appendStoryWellSpecial(msg,"playerFight");
         turnTracker++;
         playByPlay();
 
@@ -574,7 +658,7 @@ function playByPlay() {
         playerHealth -= damage;
         console.log('player health: ' + playerHealth);
         var msg = currentMonster + " did " + damage + " damage to you!";
-        appendStoryWell(msg);
+        appendStoryWellSpecial(msg,"monster");
         turnTracker--;
         //playByplay()
     } else {
@@ -586,10 +670,11 @@ function winRewards(){
     if(monsterRewards.item!=null) {
         var msg = "You added " + monsterRewards.item + " to your backpack!";
         backpack.push(monsterRewards.item);
+        appendStoryWellSpecial(msg,"win");
     } else {
         console.log("no items for you")
     }
-    appendStoryWell(monsterRewards.text);
+    appendStoryWell(monsterRewards.text, "win");
     xp += monsterRewards.xp;
     appendStoryWell(msg);
     $('#xpDisplay').text("XP: " + xp);
@@ -632,8 +717,7 @@ function addMonster(obj){
     monsterRewards = obj.rewards
 }
 
-function makeCode()
-{
+function makeCode(){
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
@@ -664,31 +748,49 @@ function saveProcess() {
         dataType: 'json',
         url: '/save/'
     }).done(function (response, textStatus, jqXHR) {
-        console.log('Save complete');
 
+        console.log('Save complete');
     }).fail(function (jqXHR, textStatus, errorThrown) {
         console.log(jqXHR, textStatus, errorThrown);
     }).always(function () {
         console.log('Saved!');
-        $('#saveCode').append(saveCode);
-        $('#saveAlert').show();
+        var saveMsg = "Save Successful!\nInput this code:\n" + saveCode + "\nthen press load to resume game at a later time";
+        appendStoryWell(saveMsg);
+        console.log(saveMsg);
     });
 }
 
+function loadProcess(code) {
 
-
-function loadProcess(){
-    var code = "Z6CZDI";
     $.ajax({
         type: 'GET',
         dataType: 'json',
-        url: '/save/'+ code,
-        data: code,
-        complete: function () {
-            console.log('getting save data');
-        },
-        success: function (data) {
-            console.log(data);
-        }
+        url: '/save/' + code,
+        data: code
+    }).done(function (response, textStatus, jqXHR) {
+        console.log('loading . . ');
+
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        var loadFail = "Could not load save data for " + code;
+        console.log(jqXHR, textStatus, errorThrown);
+        appendStoryWell(loadFail);
+    }).always(function (data) {
+        console.log('Loaded!');
+        loadSave(data);
     });
+}
+
+function loadSave(obj){
+    backpack=[];
+
+    xp=obj.xp;
+    st=obj.strength;
+    def=obj.defense;
+    currentlevel=obj.currentLvl;
+    backpack.push(obj.backpack);
+    areaId=obj.area;
+
+    getArea(areaId);
+    $('#locationDisplay').text(currentArea);
+    $('#xpDisplay').text("XP: " + xp);
 }

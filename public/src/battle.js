@@ -77,12 +77,12 @@ function playByPlay() {
 
     if (playerHealth <= 0 && monHealth >= 0) { //monster wins
         var msg = " Oh no! " + currentMonster + " has knocked you out";
-        appendStoryWell(msg);
+        appendStoryWellSpecial(msg,"monster");
         inBattle = false;
 
     } else if (monHealth <= 0 && playerHealth >= 0) { //player wins
         var msg = "Huzzah! You have slain the mighty " + currentMonster + "!";
-        appendStoryWell(msg);
+        appendStoryWellSpecial(msg,"win");
         inBattle = false;
         winRewards();
         addAreaText();
@@ -95,7 +95,7 @@ function playByPlay() {
         monHealth -= damage;
         console.log('monster health:' + monHealth);
         var msg = "You did " + damage + " damage to " + currentMonster + "!";
-        appendStoryWell(msg);
+        appendStoryWellSpecial(msg,"playerFight");
         turnTracker++;
         playByPlay();
 
@@ -105,7 +105,7 @@ function playByPlay() {
         playerHealth -= damage;
         console.log('player health: ' + playerHealth);
         var msg = currentMonster + " did " + damage + " damage to you!";
-        appendStoryWell(msg);
+        appendStoryWellSpecial(msg,"monster");
         turnTracker--;
         //playByplay()
     } else {
@@ -117,10 +117,11 @@ function winRewards(){
     if(monsterRewards.item!=null) {
         var msg = "You added " + monsterRewards.item + " to your backpack!";
         backpack.push(monsterRewards.item);
+        appendStoryWellSpecial(msg,"win");
     } else {
         console.log("no items for you")
     }
-    appendStoryWell(monsterRewards.text);
+    appendStoryWell(monsterRewards.text, "win");
     xp += monsterRewards.xp;
     appendStoryWell(msg);
     $('#xpDisplay').text("XP: " + xp);

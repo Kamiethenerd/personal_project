@@ -1,5 +1,4 @@
-function makeCode()
-{
+function makeCode(){
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
@@ -30,31 +29,49 @@ function saveProcess() {
         dataType: 'json',
         url: '/save/'
     }).done(function (response, textStatus, jqXHR) {
-        console.log('Save complete');
 
+        console.log('Save complete');
     }).fail(function (jqXHR, textStatus, errorThrown) {
         console.log(jqXHR, textStatus, errorThrown);
     }).always(function () {
         console.log('Saved!');
-        $('#saveCode').append(saveCode);
-        $('#saveAlert').show();
+        var saveMsg = "Save Successful!\nInput this code:\n" + saveCode + "\nthen press load to resume game at a later time";
+        appendStoryWell(saveMsg);
+        console.log(saveMsg);
     });
 }
 
+function loadProcess(code) {
 
-
-function loadProcess(){
-    var code = "Z6CZDI";
     $.ajax({
         type: 'GET',
         dataType: 'json',
-        url: '/save/'+ code,
-        data: code,
-        complete: function () {
-            console.log('getting save data');
-        },
-        success: function (data) {
-            console.log(data);
-        }
+        url: '/save/' + code,
+        data: code
+    }).done(function (response, textStatus, jqXHR) {
+        console.log('loading . . ');
+
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        var loadFail = "Could not load save data for " + code;
+        console.log(jqXHR, textStatus, errorThrown);
+        appendStoryWell(loadFail);
+    }).always(function (data) {
+        console.log('Loaded!');
+        loadSave(data);
     });
+}
+
+function loadSave(obj){
+    backpack=[];
+
+    xp=obj.xp;
+    st=obj.strength;
+    def=obj.defense;
+    currentlevel=obj.currentLvl;
+    backpack.push(obj.backpack);
+    areaId=obj.area;
+
+    getArea(areaId);
+    $('#locationDisplay').text(currentArea);
+    $('#xpDisplay').text("XP: " + xp);
 }
