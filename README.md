@@ -1,0 +1,3 @@
+# My Game Engine
+<p>This is a text based, adventure game engine. I set this up with the idea that I could make new game creation easy on myself (or anyone who knows how to format JSON files) by creating an engine that will read JSON files that will function as a script/story, and then handle all the game mechanics. So with this engine all you need is new Location and Monster files to create a brand new game.</p>
+<p>The engine itself pulls and reads the JSON location and monster files, handles the users "movement" from area to area, uses a leveling up system and a battles system which, at the start of a fight, pulls random monster based on the players current level.</p>
