@@ -35,6 +35,7 @@ $(document).ready(function() {
             console.log("area text: " + areaText);
             addAreaText(areaText);
         }, 1000);
+        $('#levelDisplay').text("Level: " + currentLevel);
     }
 
     newGameStart();
@@ -151,17 +152,45 @@ $(document).ready(function() {
 });
 function appendStoryWellSpecial(t,cl) {
     var $p = $('<p>');
-
-    $($p).append(t).attr("class",cl);
+    var timeOut;
+    var char = 0;
+    var humanize = Math.round(Math.random() * (120 - 30)) + 30;
+    //$($p).append(t);
     $('#storyWell').append($p);
+    $($p).attr("class",cl);
+
+    console.log(typeof t);
+    console.log(t);
+    if (typeof t == "object") {
+        t = t[0];
+    }
+
+    var txtLen = t.length;
+    //var displayText = "";
+    (function typeIt(){
+        timeOut = setTimeout(function () {
+            char++;
+            var type = t.substring(0, char);
+            $p.text(type + '|');
+            typeIt();
+
+            if (char == txtLen) {
+                $p.text($p.text().slice(0, -1)); // remove the '|'
+                clearTimeout(timeOut);
+            }
+        },humanize)
+    }());
+
+
     $('#storyWell').scrollTop($('#storyWell')[0].scrollHeight);
+
 }
 
 function appendStoryWell(t) {
     var $p = $('<p>');
     var timeOut;
     var char = 0;
-    var humanize = Math.round(Math.random() * (150 - 30)) + 30;
+    var humanize = Math.round(Math.random() * (120 - 30)) + 30;
     //$($p).append(t);
     $('#storyWell').append($p);
 
@@ -178,7 +207,7 @@ function appendStoryWell(t) {
         char++;
         var type = t.substring(0, char);
         $p.text(type + '|');
-        console.log(char);
+        //console.log(char);
         //console.log();
         typeIt();
 
@@ -195,34 +224,6 @@ function appendStoryWell(t) {
 
     },humanize)
     }());
-
-
-    //function typeIt() {
-    ////    var $el = $('#storyWell'),
-    ////        txt = $el.text(),
-    ////        txtLen = txt.length,
-    ////        timeOut,
-    //        char = 0;
-    ////
-    ////    $el.text('|');
-    //
-    //    var humanize = Math.round(Math.random() * (200 - 30)) + 30;
-    //
-    //timeOut = setTimeout(function() {
-    //        char++;
-    //        var type = txt.substring(0, char);
-    //        $el.text(type + '|');
-    //        typeIt();
-    //
-    //        if (char == txtLen) {
-    //            $el.text($el.text().slice(0, -1)); // remove the '|'
-    //            clearTimeout(timeOut);
-    //        }
-    //
-    //    }, humanize);
-    //}
-    //
-
 
 
     $('#storyWell').scrollTop($('#storyWell')[0].scrollHeight);
@@ -327,7 +328,7 @@ function takeCheck(item) {
         }
     }
     if (found == false) {
-        var msg = item + " is not an available item to pick-up.";
+        var msg = item + " is not an available item to take/grab.";
         appendStoryWell(msg);
     }
 }
@@ -393,7 +394,7 @@ function actionVS(obj){
             //backpack.push(action.object);
             xp += action.xp;
             addExit(action.exit);
-            appendStoryWell(msg);
+            //appendStoryWell(msg);
             $('#xpDisplay').text("XP: " + xp);
             levelUp(xp);
         } else{
@@ -429,82 +430,5 @@ function battleCheck(){
     }
 
 }
-
-
-
-    //typing animation examples
-
-    //function typeAnimation(v){
-    //    $(function() {
-    //        var srcText = $("<p>").append(v);
-    //        var i = 0;
-    //        var result = srcText[i];
-    //        setInterval(function() {
-    //                if(i == srcText.length) {
-    //                    clearInterval(this);
-    //                    return;
-    //                };
-    //                i++;
-    //                result += srcText[i].replace("\n", "<br />");
-    //                $("#storyWell").append(result);
-    //            },
-    //            50); // the period between every character and next one, in milliseonds.
-    //    });
-
-    //function typeIt() {
-    ////    var $el = $('#storyWell'),
-    ////        txt = $el.text(),
-    ////        txtLen = txt.length,
-    ////        timeOut,
-    //        char = 0;
-    ////
-    ////    $el.text('|');
-    //
-    //    var humanize = Math.round(Math.random() * (200 - 30)) + 30;
-    //
-    //timeOut = setTimeout(function() {
-    //        char++;
-    //        var type = txt.substring(0, char);
-    //        $el.text(type + '|');
-    //        typeIt();
-    //
-    //        if (char == txtLen) {
-    //            $el.text($el.text().slice(0, -1)); // remove the '|'
-    //            clearTimeout(timeOut);
-    //        }
-    //
-    //    }, humanize);
-    //}
-    //
-
-
-    //function typeIt() {
-    //    var $el = $('#storyWell'),
-    //        txt = $el.text(),
-    //        txtLen = txt.length,
-    //        timeOut,
-    //        char = 0;
-    //
-    //    $el.text('|');
-    //
-    //    var humanize = Math.round(Math.random() * (200 - 30)) + 30;
-    //    timeOut = setTimeout(function() {
-    //        char++;
-    //        var type = txt.substring(0, char);
-    //        $el.text(type + '|');
-    //        typeIt();
-    //
-    //        if (char == txtLen) {
-    //            $el.text($el.text().slice(0, -1)); // remove the '|'
-    //            clearTimeout(timeOut);
-    //        }
-    //
-    //    }, humanize);
-    //}
-
-
-
-
-
 
 

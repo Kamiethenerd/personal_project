@@ -13,6 +13,8 @@ var monHealth = 0;
 
 function battle() {
     inBattle = true;
+    var a = document.getElementsByTagName("audio")[0];
+
     monsterPicker(currentLevel);
 
     getEnemy(currentMonsterId);
@@ -25,8 +27,10 @@ function battle() {
         var newMon = "Oh no! It's " + currentMonster + "!";
         console.log('monster stats\n strength: ' + monSt + '\nDefense: ' + monDef + '\nlevel: ' + monLvl);
         appendStoryWell(newMon);
-        playByPlay();
-
+        setTimeout(function () {
+            a.play();
+            playByPlay();
+        }, 2000);
     }, 2000);
 }
 
@@ -73,19 +77,34 @@ function playByPlay() {
     var playerRoll = die*currentLevel;
     var monRoll = die*monLvl;
     var damage = 0;
-
+    var a = document.getElementsByTagName("audio")[0];
 
     if (playerHealth <= 0 && monHealth >= 0) { //monster wins
         var msg = " Oh no! " + currentMonster + " has knocked you out";
         appendStoryWellSpecial(msg,"monster");
         inBattle = false;
+        a.pause();
+        a.currentTime = 0;
+        areaId-=1;
+        getArea(areaId);
+        addAreaText();
 
     } else if (monHealth <= 0 && playerHealth >= 0) { //player wins
         var msg = "Huzzah! You have slain the mighty " + currentMonster + "!";
         appendStoryWellSpecial(msg,"win");
         inBattle = false;
-        winRewards();
-        addAreaText();
+        a.pause();
+        a.currentTime = 0;
+        setTimeout(function () {
+            winRewards();
+            setTimeout(function () {
+                addAreaText();
+                setTimeout(function () {
+                    $('#storyWell').scrollTop($('#storyWell')[0].scrollHeight);
+                }, 1000);
+            }, 2000);
+        }, 2000);
+
 
     } else if (turnTracker == 0) { //players turn
         console.log('monster health:' + monHealth + '\nmonster defense: ' + monDef);
@@ -97,7 +116,9 @@ function playByPlay() {
         var msg = "You did " + damage + " damage to " + currentMonster + "!";
         appendStoryWellSpecial(msg,"playerFight");
         turnTracker++;
-        playByPlay();
+        setTimeout(function () {
+            playByPlay();
+        }, 2000);
 
     } else if (turnTracker == 1) { //monsters turn
         console.log("monster Attack!");
@@ -123,7 +144,7 @@ function winRewards(){
     }
     appendStoryWell(monsterRewards.text, "win");
     xp += monsterRewards.xp;
-    appendStoryWell(msg);
+    //appendStoryWell(msg);
     $('#xpDisplay').text("XP: " + xp);
     levelUp(xp);
 }

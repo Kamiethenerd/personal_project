@@ -12,6 +12,7 @@
             st += 2;
             appendStoryWell(upDef);
             def += 3;
+            $('#levelDisplay').text("Level: " + currentLevel);
         } else if (currentLevel == 2 && x >= 200) {
             appendStoryWell(upLevel);
             currentLevel = 3;
@@ -20,6 +21,7 @@
             appendStoryWell(upDef);
             def += 1;
             backpack.push("Slippers");
+            $('#levelDisplay').text("Level: " + currentLevel);
         } else if (currentLevel == 3 && x >= 300) {
             appendStoryWell(upLevel);
             currentLevel = 4;
@@ -27,6 +29,7 @@
             st += 2;
             appendStoryWell(upDef);
             def += 3;
+            $('#levelDisplay').text("Level: " + currentLevel);
         } else if (currentLevel == 4 && x >= 500) {
             appendStoryWell(upLevel);
             currentLevel = 5;
@@ -34,6 +37,7 @@
             st += 2;
             appendStoryWell(upDef);
             def += 3;
+            $('#levelDisplay').text("Level: " + currentLevel);
         } else {
                 console.log("no level up");
         }

@@ -8,7 +8,7 @@
     {
       "locName": "Front Gate",
       "description": "The entrance is made up to look like the wide gaping mouth of a sinister looking clown,\nbut you'll be darned if you miss the one bit of excitement to come to your town in months",
-      "hint": "Go Entrance",
+      "hint": "Go Entrance or take a rock",
       "actions": null,
       "exits": {
       "entrance": 1,
@@ -88,7 +88,7 @@
     },
     {
       "locName": "Locked Zombie Cage",
-      "description": "You come to locked cage that appears to empty. There's a large lock on the door",
+      "description": "You come to locked cage that appears to empty. There's a large lock on the door. You can't really tell but there appears to be an opening in the back of the cage",
       "hint": "use key or go back",
       "actions": {
         "key": {

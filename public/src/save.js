@@ -74,4 +74,7 @@ function loadSave(obj){
     getArea(areaId);
     $('#locationDisplay').text(currentArea);
     $('#xpDisplay').text("XP: " + xp);
+    $('#levelDisplay').text('Level: ' + currentLevel);
+
+    addAreaText();
 }

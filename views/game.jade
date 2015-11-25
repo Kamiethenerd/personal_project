@@ -3,18 +3,15 @@ extends layout
 
 block content
     #gameInterface.fluidContainer
-        ul#displays.list-inline
-            li
-                h2#locationDisplay.text-info
+        h2#locationDisplay.text-info.col-md-8
+        ul#displays.list-inline.col-md-4
             li
                 h2#xpDisplay.text-success
             li
-                h2#LevelDisplay.text-danger
+                h2#levelDisplay.text-warning
         #storyWell.well.well-lg
-        p INPUT
+        p.col-md-8 INPUT
             input#userInput.well-sm(type='text')
-        ul#inputs.list-inline.pull-right
-            li
-                #saveBtn.btn.btn-success.btn-lg.pull-right SAVE
-            li
-                #loadBtn.btn.btn-warning.btn-lg.pull-right LOAD
+            #saveBtn.btn.btn-success.btn-lg.pull-right.col-md-2 SAVE
+            #loadBtn.btn.btn-warning.btn-lg.pull-right.col-md-2 LOAD
+    audio#fight(src="./audio/subbossTheme.m4a" loop)
