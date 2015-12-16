@@ -22,6 +22,18 @@ var inBattle = false;
 
 $(document).ready(function() {
 
+    //Tab handler
+    $('#help').click(function (e) {
+        alert('works');
+        e.preventDefault();
+        $(this).tab('show')
+    });
+    $('#game').click(function (e) {
+        alert('works');
+        e.preventDefault();
+        $(this).tab('show')
+    });
+
     // when loading page
     function newGameStart() {
         var load = "loading . . . ";

@@ -14,6 +14,10 @@ p {
   height:400px;
   overflow-y:auto;
 }
+#help {
+  height:400px;
+  overflow-y:auto;
+}
 .playerText{
     color: #66ff33;
 }

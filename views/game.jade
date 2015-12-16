@@ -9,7 +9,15 @@ block content
                 h2#xpDisplay.text-success
             li
                 h2#levelDisplay.text-warning
-        #storyWell.well.well-lg
+        div
+            ul.nav.nav-tabs(role="tablist")
+                li.active(role="game")
+                    a(href="#storyWell" aria-controls="game" role="tab" data-toggle="tab") GAME
+               //- li(role="help")
+                    a(href="#help" aria-controls="help" role="tab" data-toggle="tab") HELP
+        div.tab-content
+            div#storyWell.well.well-lg.tab-pane.active
+            div#help.well.well-lg.tab-pane Help Stuff
         p.col-md-8 INPUT
             input#userInput.well-sm(type='text')
             #saveBtn.btn.btn-success.btn-lg.pull-right.col-md-2 SAVE
